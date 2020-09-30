@@ -59,15 +59,9 @@ class Relation_Inference():
             for p in range(self.Mc):
                 obj += samples_r[m][p] * p_table_r[m][p]
 
-                '''
-                if len(self.prior_dist) > 0:
-                    if p == 0 or p == self.Mc - 1:
-                        obj += 0.5 * samples_r[m][p] * self.prior_dist[m][0]
-                    else:  obj += 0.2 * samples_r[m][p] * self.prior_dist[m][p]
-                '''
-                
-                
                 if len(self.sample_event_types[m]) == 0: continue
+
+                # LR optimization
                 key = (self.sample_event_types[m][0], self.sample_event_types[m][1], p)
                 if key in self.constraint_param:
                     ld = self.constraint_param[key]
@@ -80,26 +74,11 @@ class Relation_Inference():
                         else:
                             obj -= ld * samples_r[m][pp] * r
 
-                '''
-                if len(self.sample_pair_text[m]) == 0: continue
-                key = (self.sample_pair_text[m][0], self.sample_pair_text[m][1], p)
-                if key in self.constraint_param:
-                    ld = self.constraint_param[key]
-                    r = self.constraints[key]
-                    #print(key, ld, r)
-                    for pp in range(self.Mc):
-                        if pp == p or (pp == self.label_map_rel['NONE'] and
-                                       p == self.label_map_rel['VAGUE']):
-                            obj += ld * samples_r[m][pp] * (1 - r)
-                        else:
-                            obj -= ld * samples_r[m][pp] * r
-                '''            
         return obj
 
     
     def single_label(self, sample):
         return sum(sample) == 1
-
 
     def rel_ent_sum(self, samples_e, samples_r, e, r, c):
         # negative rel constraint
@@ -145,6 +124,7 @@ class Relation_Inference():
         for m in range(self.M):
             self.model.addConstr(self.single_label(var_table_r[m]), "c1_%s" % m)
 
+        """ Not using any previous hard constraints"""
         '''
         trans_triples = self.transitivity_list()
         self.trans_triples = trans_triples
@@ -156,8 +136,6 @@ class Relation_Inference():
                 t += 1
         print("Total %s transitivity constraints" % t)
         
-        '''
-        '''
         # Constraint 2: Positive relation requires positive event arguments
         for r, cr in enumerate(self.event_heads):
             for c in range(self.Mc-1):

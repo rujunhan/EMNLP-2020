@@ -1,33 +1,25 @@
-from pathlib import Path
 import pickle
-import sys
 import argparse
-from collections import defaultdict, Counter, OrderedDict
 from itertools import combinations
-from typing import Iterator, List, Mapping, Union, Optional, Set
-import logging as log
-import abc
 from dataclasses import dataclass
-from datetime import datetime
 import numpy as np
-import random
 import torch
-import torch.autograd as autograd
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
-from torch.autograd import Variable
-from torch.nn import Parameter
-import math
 import time
-import copy
+from collections import OrderedDict
 from torch.utils import data
 from torch.nn.utils.rnn import pack_padded_sequence as pack, pad_packed_sequence as unpack
-from featurize_data import matres_label_map, tbd_label_map
-from functools import partial
-from sklearn.model_selection import KFold, ParameterGrid, train_test_split
 from utils import ClassificationReport, assign_event_types
 from LROptimization import *
+
+tbd_label_map = OrderedDict([('VAGUE', 'VAGUE'),
+                             ('BEFORE', 'BEFORE'),
+                             ('AFTER', 'AFTER'),
+                             ('SIMULTANEOUS', 'SIMULTANEOUS'),
+                             ('INCLUDES', 'INCLUDES'),
+                             ('IS_INCLUDED', 'IS_INCLUDED'),
+                         ])
 
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
@@ -753,11 +745,11 @@ def main(args):
               'shuffle': False,
               'collate_fn': pad_collate}
 
-    gold_ratio, _ = compute_ratio("train", "../data/%s/" % args.data_type)
+    gold_ratio, _ = compute_ratio("train", "../data/%s/raw/" % args.data_type)
     constraints = parse_constraint_file(args.constraints)
     args.constraints = {constraint:gold_ratio[constraint] for constraint in constraints}
 
-    _, pair_lookup = compute_ratio(args.test_split, "../data/%s/" % args.data_type)
+    _, pair_lookup = compute_ratio(args.test_split, "../data/%s/raw/" % args.data_type)
     args.pair_lookup = pair_lookup
 
     type_dir = "/all_context/"

@@ -1,27 +1,6 @@
 from gurobi_inference import Relation_Inference
-from collections import Counter, OrderedDict
+from collections import Counter
 import copy
-
-
-def define_event_constraints(label_map_rel):
-
-    constraints = {('OCCURRENCE', 'OCCURRENCE', label_map_rel['VAGUE']): 0.510387811634349,
-                   ('OCCURRENCE', 'REPORTING', label_map_rel['VAGUE']): 0.399253731343283,
-                   ('I_ACTION', 'OCCURRENCE', label_map_rel['VAGUE']): 0.435331230283911,
-                   ('REPORTING', 'OCCURRENCE', label_map_rel['VAGUE']): 0.387283236994219}
-
-    # constraints = {('OCCURRENCE', 'OCCURRENCE', label_map_rel['VAGUE']): 0.510387811634349,
-    #                ('OCCURRENCE', 'REPORTING', label_map_rel['VAGUE']): 0.399253731343283,
-    #                #('OCCURRENCE', 'I_ACTION', label_map_rel['VAGUE']): 0.497512437810945,
-    #                ('REPORTING', 'OCCURRENCE', label_map_rel['VAGUE']): 0.387283236994219,
-    #                ('I_ACTION', 'OCCURRENCE', label_map_rel['VAGUE']): 0.435331230283911,
-    #                #('I_ACTION', 'I_ACTION', label_map_rel['VAGUE']): 0.534883720930232,
-    #                ('REPORTING', 'REPORTING', label_map_rel['VAGUE']): 0.7727272727,
-    #                ('I_ACTION', 'REPORTING', label_map_rel['VAGUE']): 0.5813953488,
-    #                ('REPORTING', 'I_ACTION', label_map_rel['VAGUE']): 0.514285714285714
-    #                }
-
-    return constraints
 
 def calculate_prob(class_counts, threshold=100):
     total_counts = sum(class_counts)
