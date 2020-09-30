@@ -760,6 +760,7 @@ def main(args):
     train_generator = data.DataLoader(train_data, **params)
     
     model = NNClassifier()
+    # simply using train_epoch to load model, not training models.
     model.train_epoch(train_generator, test_generator, args)
     evaluator = EventEvaluator(model)
     evaluator.evaluate(test_generator, args)
