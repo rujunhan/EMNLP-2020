@@ -3,7 +3,7 @@
 This is the public repo for our EMNLP'20 paper: https://arxiv.org/abs/2009.07373.
 
 You should be able to replicate the main results in the paper following the instructions below for TB-Dense data.
-For I2b2 dataset, due to confidentiality and non-disclosure agreements, we are not able to publish anything relevant, but code sharing can be granted case by case upon data owner's agreement.
+For I2b2 dataset, due to confidentiality and non-disclosure agreements, we are not able to publish data and data analysis code, but modeling code may be added soon upon data owner's permission.
 
 ---
 
